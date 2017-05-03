@@ -15,8 +15,12 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+private: //methods
+    void BresenhamAlgorithm();
+
 private:
     Ui::MainWindow *ui;
+    QImage image;
 };
 
 #endif // MAINWINDOW_H
