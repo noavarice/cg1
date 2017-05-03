@@ -6,6 +6,15 @@ MainWindow::MainWindow(QWidget *parent)
     , ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    imageFirst = QImage(ui->labelFirstCurve->size(), QImage::Format_ARGB32);
+    imageSecond = QImage(ui->labelFirstCurve->size(), QImage::Format_ARGB32);
+
+    imageFirst.fill(Qt::white);
+    imageSecond.fill(Qt::white);
+
+    ui->labelFirstCurve->setPixmap(QPixmap::fromImage(imageFirst));
+    ui->labelSecondCurve->setPixmap(QPixmap::fromImage(imageSecond));
 }
 
 MainWindow::~MainWindow()

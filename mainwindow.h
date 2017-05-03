@@ -20,7 +20,8 @@ private: //methods
 
 private:
     Ui::MainWindow *ui;
-    QImage image;
+    QImage imageFirst;
+    QImage imageSecond;
 };
 
 #endif // MAINWINDOW_H
