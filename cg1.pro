@@ -13,8 +13,10 @@ TEMPLATE = app
 
 
 SOURCES += main.cpp\
-        mainwindow.cpp
+        mainwindow.cpp \
+    bresenham.cpp
 
-HEADERS  += mainwindow.h
+HEADERS  += mainwindow.h \
+    bresenham.h
 
 FORMS    += mainwindow.ui
