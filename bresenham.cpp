@@ -1,12 +1,20 @@
 #include "bresenham.h"
 
+#include <QColor>
+#include <QImage>
+#include <QPoint>
+
 #include <QtMath>
 
 /**
  * @brief Находит и возвращает пару точек, являющихся возможными центрами круга, проходящего через
  * p1 и p2
  */
-static QPoint getCircleCenter(const QPoint& p1, const QPoint& p2, const uint8_t radius)
+static QPoint getCircleCenter(
+        const QPoint& p1,
+        const QPoint& p2,
+        const uint8_t radius
+        )
 {
     int dx, dy;
     if (p1.x() > p2.x()) {
@@ -31,9 +39,40 @@ static QPoint getCircleCenter(const QPoint& p1, const QPoint& p2, const uint8_t 
     return middle - QPoint(dx, dy);
 }
 
-void bresenhamCircleCurve(INOUT QImage& image,
-                          const QPoint& start,
-                          const QPoint& end,
-                          const uint8_t radius)
+static int getEpsilon(const QPoint& center, const QPoint& radiusPoint, const uint8_t radius)
 {
+    QPoint diff{center.x() - radiusPoint.x(), center.y() - radiusPoint.y()};
+    int sqrDistance = diff.x() * diff.x() + diff.y() * diff.y();
+    return qAbs(sqrDistance - radius * radius);
+}
+
+void bresenhamCircleCurve(
+        INOUT QImage& image,
+        const QColor& color,
+        const QPoint& start,
+        const QPoint& end,
+        const uint8_t radius
+        )
+{
+    QPoint center = getCircleCenter(start, end, radius);
+    QPoint rightPointOffset{1, 0};
+    QPoint bottomPointOffset{0, 1};
+    QPoint diagonalPointOffset{1, 1};
+    const int bottomLimit = center.y();
+    QPoint currentPoint{center.x(), bottomLimit - radius};
+    while (currentPoint.y() < bottomLimit) {
+        QPoint nextPoint = currentPoint + rightPointOffset;
+        int minEpsilon = getEpsilon(center, currentPoint + rightPointOffset, radius);
+        int tempEpsilon = getEpsilon(center, currentPoint + diagonalPointOffset, radius);
+        if (tempEpsilon < minEpsilon) {
+            minEpsilon = tempEpsilon;
+            nextPoint = currentPoint + bottomPointOffset;
+        }
+        tempEpsilon = getEpsilon(center, currentPoint + diagonalPointOffset, radius);
+        if (tempEpsilon < minEpsilon) {
+            nextPoint = currentPoint + diagonalPointOffset;
+        }
+        currentPoint = nextPoint;
+        image.setPixelColor(nextPoint, color);
+    }
 }
