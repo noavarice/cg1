@@ -28,10 +28,10 @@ static QPoint getCircleCenter(
     int catheterLength = static_cast<int>(qSqrt(radius * radius - lengthSqr / 4));
     QPoint middle = QPoint((p1.x() + p2.x()) / 2, (p1.y() + p2.y()) / 2);
     if (!dx) {
-        return QPoint(-catheterLength, middle.y());
+        return QPoint(middle.x() - catheterLength, middle.y());
     }
     if (!dy) {
-        return QPoint(middle.x(), -catheterLength);
+        return QPoint(middle.x(), middle.y() - catheterLength);
     }
     qreal coeff = -dx / dy;
     dx = qCos(coeff) * catheterLength;
