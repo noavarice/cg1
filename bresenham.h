@@ -11,10 +11,11 @@ class QPoint;
 
 void bresenhamCircleCurve(
         INOUT QImage& image,
-        const QColor& color,
         const QPoint& start,
         const QPoint& end,
-        const uint8_t radius
+        uint8_t radius,
+        const QColor& color,
+        uint8_t width
         );
 
 #endif // BRESENHAM_H

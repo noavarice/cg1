@@ -7,13 +7,13 @@
 #include <QtMath>
 
 /**
- * @brief Находит и возвращает пару точек, являющихся возможными центрами круга, проходящего через
+ * @brief Находит и возвращает точку, являющуюся одним из возможных центров круга, проходящего через
  * p1 и p2
  */
 static QPoint getCircleCenter(
         const QPoint& p1,
         const QPoint& p2,
-        const uint8_t radius
+        uint8_t radius
         )
 {
     int dx, dy;
@@ -46,33 +46,54 @@ static int getEpsilon(const QPoint& center, const QPoint& radiusPoint, const uin
     return qAbs(sqrDistance - radius * radius);
 }
 
-void bresenhamCircleCurve(
+static void setPixelsColor(
         INOUT QImage& image,
         const QColor& color,
+        const QPoint& center,
+        const QPoint& radiusPoint
+        )
+{
+    QPoint centerDiff{qAbs(radiusPoint.x() - center.x()), qAbs(radiusPoint.y() - center.y())};
+    image.setPixelColor({center.x() + centerDiff.x(), center.y() + centerDiff.y()}, color);
+    image.setPixelColor({center.x() - centerDiff.x(), center.y() + centerDiff.y()}, color);
+    image.setPixelColor({center.x() + centerDiff.x(), center.y() - centerDiff.y()}, color);
+    image.setPixelColor({center.x() - centerDiff.x(), center.y() - centerDiff.y()}, color);
+}
+
+void bresenhamCircleCurve(
+        INOUT QImage& image,
         const QPoint& start,
         const QPoint& end,
-        const uint8_t radius
+        uint8_t radius,
+        const QColor& color,
+        uint8_t width
         )
 {
     QPoint center = getCircleCenter(start, end, radius);
     QPoint rightPointOffset{1, 0};
     QPoint bottomPointOffset{0, 1};
     QPoint diagonalPointOffset{1, 1};
-    const int bottomLimit = center.y();
-    QPoint currentPoint{center.x(), bottomLimit - radius};
-    while (currentPoint.y() < bottomLimit) {
-        QPoint nextPoint = currentPoint + rightPointOffset;
-        int minEpsilon = getEpsilon(center, currentPoint + rightPointOffset, radius);
-        int tempEpsilon = getEpsilon(center, currentPoint + diagonalPointOffset, radius);
-        if (tempEpsilon < minEpsilon) {
-            minEpsilon = tempEpsilon;
-            nextPoint = currentPoint + bottomPointOffset;
+    radius -= width / 2;
+    while (width) {
+        const int bottomLimit = center.y();
+        QPoint currentPoint{center.x(), bottomLimit - radius};
+        setPixelsColor(image, color, center, currentPoint);
+        while (currentPoint.y() < bottomLimit) {
+            QPoint nextPoint = currentPoint + rightPointOffset;
+            int minEpsilon = getEpsilon(center, currentPoint + rightPointOffset, radius);
+            int tempEpsilon = getEpsilon(center, currentPoint + diagonalPointOffset, radius);
+            if (tempEpsilon < minEpsilon) {
+                minEpsilon = tempEpsilon;
+                nextPoint = currentPoint + bottomPointOffset;
+            }
+            tempEpsilon = getEpsilon(center, currentPoint + diagonalPointOffset, radius);
+            if (tempEpsilon < minEpsilon) {
+                nextPoint = currentPoint + diagonalPointOffset;
+            }
+            currentPoint = nextPoint;
+            setPixelsColor(image, color, center, currentPoint);
         }
-        tempEpsilon = getEpsilon(center, currentPoint + diagonalPointOffset, radius);
-        if (tempEpsilon < minEpsilon) {
-            nextPoint = currentPoint + diagonalPointOffset;
-        }
-        currentPoint = nextPoint;
-        image.setPixelColor(nextPoint, color);
+        ++radius;
+        --width;
     }
 }
