@@ -46,18 +46,50 @@ static int getEpsilon(const QPoint& center, const QPoint& radiusPoint, const uin
     return qAbs(sqrDistance - radius * radius);
 }
 
+static bool upperTheLine(
+        const QPoint& point,
+        const QPoint& start,
+        const QPoint& end
+        )
+{
+    double dx = start.x() - end.x();
+    double dy = start.y() - end.y();
+    if (!dx) {
+        return point.x() >= start.x();
+    }
+    if (!dy) {
+        return point.y() <= start.y();
+    }
+    return point.y() <= ((dy / dx) * (point.x() - start.x()) + start.y());
+}
+
 static void setPixelsColor(
         INOUT QImage& image,
         const QColor& color,
         const QPoint& center,
-        const QPoint& radiusPoint
+        const QPoint& start,
+        const QPoint& end,
+        const QPoint& radiusPoint,
+        bool withinRectangle
         )
 {
     QPoint centerDiff{qAbs(radiusPoint.x() - center.x()), qAbs(radiusPoint.y() - center.y())};
-    image.setPixelColor({center.x() + centerDiff.x(), center.y() + centerDiff.y()}, color);
-    image.setPixelColor({center.x() - centerDiff.x(), center.y() + centerDiff.y()}, color);
-    image.setPixelColor({center.x() + centerDiff.x(), center.y() - centerDiff.y()}, color);
-    image.setPixelColor({center.x() - centerDiff.x(), center.y() - centerDiff.y()}, color);
+    QPoint drawPoint{center.x() + centerDiff.x(), center.y() + centerDiff.y()};
+    if (upperTheLine(drawPoint, start, end) == withinRectangle) {
+        image.setPixelColor(drawPoint, color);
+    }
+    drawPoint = {center.x() - centerDiff.x(), center.y() + centerDiff.y()};
+    if (upperTheLine(drawPoint, start, end) == withinRectangle) {
+        image.setPixelColor(drawPoint, color);
+    }
+    drawPoint = {center.x() + centerDiff.x(), center.y() - centerDiff.y()};
+    if (upperTheLine(drawPoint, start, end) == withinRectangle) {
+        image.setPixelColor(drawPoint, color);
+    }
+    drawPoint = {center.x() - centerDiff.x(), center.y() - centerDiff.y()};
+    if (upperTheLine(drawPoint, start, end) == withinRectangle) {
+        image.setPixelColor(drawPoint, color);
+    }
 }
 
 void bresenhamCircleCurve(
@@ -66,7 +98,8 @@ void bresenhamCircleCurve(
         const QPoint& end,
         uint8_t radius,
         const QColor& color,
-        uint8_t width
+        uint8_t width,
+        bool withinRectangle
         )
 {
     QPoint center = getCircleCenter(start, end, radius);
@@ -77,7 +110,7 @@ void bresenhamCircleCurve(
     while (width) {
         const int bottomLimit = center.y();
         QPoint currentPoint{center.x(), bottomLimit - radius};
-        setPixelsColor(image, color, center, currentPoint);
+        setPixelsColor(image, color, center, start, end, currentPoint, withinRectangle);
         while (currentPoint.y() < bottomLimit) {
             QPoint nextPoint = currentPoint + rightPointOffset;
             int minEpsilon = getEpsilon(center, currentPoint + rightPointOffset, radius);
@@ -91,7 +124,7 @@ void bresenhamCircleCurve(
                 nextPoint = currentPoint + diagonalPointOffset;
             }
             currentPoint = nextPoint;
-            setPixelsColor(image, color, center, currentPoint);
+            setPixelsColor(image, color, center, start, end, currentPoint, withinRectangle);
         }
         ++radius;
         --width;

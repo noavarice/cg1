@@ -15,7 +15,8 @@ void bresenhamCircleCurve(
         const QPoint& end,
         uint8_t radius,
         const QColor& color,
-        uint8_t width
+        uint8_t width,
+        bool withinRectangle
         );
 
 #endif // BRESENHAM_H
