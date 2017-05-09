@@ -36,7 +36,7 @@
     <property name="geometry">
      <rect>
       <x>830</x>
-      <y>140</y>
+      <y>197</y>
       <width>31</width>
       <height>18</height>
      </rect>
@@ -52,7 +52,7 @@
     <property name="geometry">
      <rect>
       <x>830</x>
-      <y>170</y>
+      <y>227</y>
       <width>41</width>
       <height>18</height>
      </rect>
@@ -68,7 +68,7 @@
     <property name="geometry">
      <rect>
       <x>830</x>
-      <y>200</y>
+      <y>257</y>
       <width>31</width>
       <height>18</height>
      </rect>
@@ -84,7 +84,7 @@
     <property name="geometry">
      <rect>
       <x>830</x>
-      <y>234</y>
+      <y>291</y>
       <width>51</width>
       <height>18</height>
      </rect>
@@ -97,7 +97,7 @@
     <property name="geometry">
      <rect>
       <x>880</x>
-      <y>273</y>
+      <y>330</y>
       <width>80</width>
       <height>26</height>
      </rect>
@@ -110,7 +110,7 @@
     <property name="geometry">
      <rect>
       <x>890</x>
-      <y>133</y>
+      <y>190</y>
       <width>111</width>
       <height>29</height>
      </rect>
@@ -123,7 +123,7 @@
     <property name="geometry">
      <rect>
       <x>890</x>
-      <y>163</y>
+      <y>220</y>
       <width>111</width>
       <height>29</height>
      </rect>
@@ -136,7 +136,7 @@
     <property name="geometry">
      <rect>
       <x>890</x>
-      <y>193</y>
+      <y>250</y>
       <width>111</width>
       <height>29</height>
      </rect>
@@ -149,7 +149,7 @@
     <property name="geometry">
      <rect>
       <x>890</x>
-      <y>223</y>
+      <y>280</y>
       <width>111</width>
       <height>29</height>
      </rect>
@@ -209,6 +209,122 @@
     </property>
     <property name="text">
      <string/>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spinBoxX1">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>70</y>
+      <width>111</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>100</number>
+    </property>
+    <property name="maximum">
+     <number>300</number>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spinBoxY1">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>100</y>
+      <width>111</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>100</number>
+    </property>
+    <property name="maximum">
+     <number>300</number>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spinBoxX2">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>130</y>
+      <width>111</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>100</number>
+    </property>
+    <property name="maximum">
+     <number>300</number>
+    </property>
+   </widget>
+   <widget class="QSpinBox" name="spinBoxY2">
+    <property name="geometry">
+     <rect>
+      <x>890</x>
+      <y>160</y>
+      <width>111</width>
+      <height>27</height>
+     </rect>
+    </property>
+    <property name="minimum">
+     <number>100</number>
+    </property>
+    <property name="maximum">
+     <number>300</number>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelX1">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>77</y>
+      <width>31</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>x1</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelY1">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>107</y>
+      <width>31</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>y1</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelX2">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>137</y>
+      <width>31</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>x2</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="labelY2">
+    <property name="geometry">
+     <rect>
+      <x>830</x>
+      <y>167</y>
+      <width>31</width>
+      <height>18</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>y2</string>
     </property>
    </widget>
   </widget>
